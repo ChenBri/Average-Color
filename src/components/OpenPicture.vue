@@ -19,7 +19,7 @@
     <canvas class="hidden" id="myCanvas" :width="widthX" :height="heightY" style="border:1px solid #000000"></canvas>
 
     <button @click="getColorArray">asdasdasd</button>
-   
+    <div  class="w-[200px] h-[50px]">{{ RGBcolor }}</div>
   </section>
 </template>
 
@@ -30,7 +30,7 @@ export default {
       file: null,
       widthX: 0,
       heightY: 0,
-      RGBcolor: 'red'
+      RGBcolor: ''
     };
   },
 
@@ -87,6 +87,7 @@ export default {
       rgb.r = Math.floor(rgb.r / count);
       rgb.g = Math.floor(rgb.g / count);
       rgb.b = Math.floor(rgb.b / count);
+      this.RGBcolor = rgb;
       console.log(rgb);
       console.log(imageArray);
     },
