@@ -19,12 +19,18 @@
     <canvas class="hidden" id="myCanvas" :width="widthX" :height="heightY" style="border:1px solid #000000"></canvas>
 
     <button @click="getColorArray">asdasdasd</button>
-    <div  class="w-[200px] h-[50px]">{{ RGBcolor }}</div>
+    <color-container :RGBcolor="RGBcolor"></color-container>
+    
   </section>
 </template>
 
 <script>
+import ColorContainer from './ColorContainer.vue';
 export default {
+  components: {
+    ColorContainer
+  },
+  
   data() {
     return {
       file: null,
