@@ -94,8 +94,7 @@ export default {
       rgb.g = Math.floor(rgb.g / count);
       rgb.b = Math.floor(rgb.b / count);
       this.RGBcolor = rgb;
-      console.log(rgb);
-      console.log(imageArray);
+      
     },
   },
 };
