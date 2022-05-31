@@ -1,8 +1,8 @@
 <template>
-  <div :style="{backgroundColor: HEX}" id="container" class="border-2">
-    <div class="w-[200px] h-[50px]">{{ RGB }}</div>
-    <div class="w-[200px] h-[50px]">{{ HEX }}</div>
-    <div class="w-[200px] h-[50px]">{{ HSL }}</div>
+  <div v-if="firstTrigger===true" :style="{backgroundColor: HEX}" id="container" class="border-2 w-[200px] h-[200px] flex flex-col justify-center items-center p-6 font-bold text-white">
+    <div class="h-[50px] content-center">{{ RGB }}</div>
+    <div class="h-[50px] content-center">{{ HEX }}</div>
+    <div class="h-[50px] content-center">{{ HSL }}</div>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     };
   },
 
-  props: ["RGBcolor"],
+  props: ["RGBcolor", "firstTrigger"],
 
   watch: {
     RGBcolor() {
