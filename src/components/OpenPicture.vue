@@ -81,7 +81,11 @@ export default {
     getFile(id) {
       const previewImage = this.$el.querySelector("#image-preview-image");
       const previewText = this.$el.querySelector("#image-preview-text");
+
       if (id == "inpFile") {
+
+        this.url='' //Reset URL
+
         const inpFile = document.getElementById(id);
 
         this.file = inpFile.files[0];
@@ -164,7 +168,8 @@ export default {
 
   watch: {
     url() {
-      this.getFile("url");
+      // Reset File Input
+      document.getElementById('inpFile').value='';
     },
   },
 };
