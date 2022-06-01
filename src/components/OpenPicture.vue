@@ -1,19 +1,29 @@
 <template>
   <section>
-    <p class="text-xl pb-2">Import your image below:</p>
+    <div class="flex flex-cols justify-around">
+      <div class="border-2 border-gray-500">
+        <p class="text-xl pb-2">Import your image below:</p>
 
-    <input
-      class="py-6"
-      type="file"
-      id="inpFile"
-      name="img"
-      accept="image/*"
-      @change="getFile"
-    />
+        <input
+          class="py-6"
+          type="file"
+          id="inpFile"
+          name="img"
+          accept="image/*"
+          @change="getFile('inpFile')"
+        />
+      </div>
 
-    <div id="image-preview-container">
+      <div class="border-2 border-gray-500">
+        <p class="text-xl pb-2">Insert your link below:</p>
+        <input type="url" id="url" pattern="https://.*" />
+      </div>
+    </div>
+
+
+<div class="flex flex-col ">
+    <div class="mx-auto" id="image-preview-container">
       <img src="" alt="Image Preview" id="image-preview-image" />
-
       <span id="image-preview-text">Image Preview</span>
     </div>
 
@@ -40,10 +50,12 @@
     >
       Click here find the average color
     </button>
-    <color-container
+
+    <color-container class="mx-auto"
       :RGBcolor="RGBcolor"
       :firstTrigger="firstTrigger"
     ></color-container>
+</div>
   </section>
 </template>
 
@@ -65,8 +77,8 @@ export default {
   },
 
   methods: {
-    getFile() {
-      const inpFile = document.getElementById("inpFile");
+    getFile(id) {
+      const inpFile = document.getElementById(id);
       const previewImage = this.$el.querySelector("#image-preview-image");
       const previewText = this.$el.querySelector("#image-preview-text");
 
@@ -140,7 +152,7 @@ export default {
 
 <style scoped>
 #image-preview-container {
-  width: 300px;
+  width: 30rem;
   min-height: 100px;
   border: 2px solid lightgray;
   margin-top: 15px;
