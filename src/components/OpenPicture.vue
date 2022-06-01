@@ -68,12 +68,13 @@ export default {
 
   data() {
     return {
-      file: null,
-      widthX: 0,
-      heightY: 0,
-      RGBcolor: "",
-      firstTrigger: false,
-      url: "",
+      file: null, // Input File
+      url: "", // Input URL
+      widthX: 0, // Width of the canvas
+      heightY: 0, // Height of the canvas
+      RGBcolor: "", // EGB Object, e.g {r: 113, g: 100, b: 87}
+      firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
+      
     };
   },
 
@@ -83,8 +84,7 @@ export default {
       const previewText = this.$el.querySelector("#image-preview-text");
 
       if (id == "inpFile") {
-
-        this.url='' //Reset URL
+        this.url = ""; //Reset URL
 
         const inpFile = document.getElementById(id);
 
@@ -92,30 +92,31 @@ export default {
 
         if (this.file) {
           const reader = new FileReader();
-
-          previewText.style.display = "none";
-          previewImage.style.display = "block";
           reader.addEventListener("load", function () {
             previewImage.setAttribute("src", this.result);
           });
-
           reader.readAsDataURL(this.file);
+
+          previewText.style.display = "none";
+          previewImage.style.display = "block";
+          
         } else {
           previewText.style.display = null;
           previewImage.style.display = null;
           previewImage.setAttribute("src", "");
         }
-      } else {
+      } else if(id == "url") {
         var request = new XMLHttpRequest();
         request.open("GET", this.url, true);
         request.send();
         request.onload = function () {
-          if (request.status == 200) {
-            console.log("image exists");
-          } else {
+
+          if (request.status !== 200) {   // URL isn't a valid image
             previewText.style.display = "block";
             previewImage.style.display = "none";
-            console.log("image doesn't exist");
+          } else {                        // URL is a valid image
+            previewText.style.display = "none";
+            previewImage.style.display = "block";
           }
         };
       }
@@ -168,8 +169,9 @@ export default {
 
   watch: {
     url() {
-      // Reset File Input
-      document.getElementById('inpFile').value='';
+      this.getFile("url");
+      // Reset the input file
+      document.getElementById("inpFile").value = "";
     },
   },
 };
