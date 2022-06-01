@@ -175,12 +175,14 @@ export default {
 
     activeTab(src) {
 
-      
+      this.firstTrigger=false;
       const previewImage = this.$el.querySelector("#image-preview-image");
+      
       const previewText = this.$el.querySelector("#image-preview-text");
+
       previewText.style.display = "block";
       previewImage.style.display = "none";
-      this.firstTrigger=false;
+      
       this.active = src;
       document.getElementById("inpFile").value = "";
     },
@@ -188,7 +190,8 @@ export default {
 
   watch: {
     url() {
-      // Reset the input file
+      this.url= this.url.replace(/\s/g, '');
+      
 
       this.getFile("url");
     },
