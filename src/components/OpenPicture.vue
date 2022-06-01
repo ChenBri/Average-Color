@@ -16,46 +16,46 @@
 
       <div class="border-2 border-gray-500">
         <p class="text-xl pb-2">Insert your link below:</p>
-        <input type="url" id="url" pattern="https://.*" />
+        <input v-model="url" type="url" id="url" pattern="https://.*" />
       </div>
     </div>
 
+    <div class="flex flex-col">
+      <div class="mx-auto" id="image-preview-container">
+        <img :src="url" alt="Image Preview" id="image-preview-image" />
+        <span id="image-preview-text">Image Preview</span>
+      </div>
 
-<div class="flex flex-col ">
-    <div class="mx-auto" id="image-preview-container">
-      <img src="" alt="Image Preview" id="image-preview-image" />
-      <span id="image-preview-text">Image Preview</span>
+      <canvas
+        class="hidden"
+        id="myCanvas"
+        :width="widthX"
+        :height="heightY"
+        style="border: 1px solid #000000"
+      ></canvas>
+
+      <button
+        @click="getColorArray"
+        class="
+          bg-blue-500
+          hover:bg-blue-700
+          text-white
+          font-bold
+          py-2
+          my-4
+          px-4
+          rounded
+        "
+      >
+        Click here find the average color
+      </button>
+
+      <color-container
+        class="mx-auto"
+        :RGBcolor="RGBcolor"
+        :firstTrigger="firstTrigger"
+      ></color-container>
     </div>
-
-    <canvas
-      class="hidden"
-      id="myCanvas"
-      :width="widthX"
-      :height="heightY"
-      style="border: 1px solid #000000"
-    ></canvas>
-
-    <button
-      @click="getColorArray"
-      class="
-        bg-blue-500
-        hover:bg-blue-700
-        text-white
-        font-bold
-        py-2
-        my-4
-        px-4
-        rounded
-      "
-    >
-      Click here find the average color
-    </button>
-
-    <color-container class="mx-auto"
-      :RGBcolor="RGBcolor"
-      :firstTrigger="firstTrigger"
-    ></color-container>
-</div>
   </section>
 </template>
 
@@ -73,39 +73,53 @@ export default {
       heightY: 0,
       RGBcolor: "",
       firstTrigger: false,
+      url: "",
     };
   },
 
   methods: {
     getFile(id) {
-      const inpFile = document.getElementById(id);
       const previewImage = this.$el.querySelector("#image-preview-image");
       const previewText = this.$el.querySelector("#image-preview-text");
+      if (id == "inpFile") {
+        const inpFile = document.getElementById(id);
 
-      this.file = inpFile.files[0];
+        this.file = inpFile.files[0];
 
-      if (this.file) {
-        console.log(this.file);
-        const reader = new FileReader();
+        if (this.file) {
+          const reader = new FileReader();
 
-        previewText.style.display = "none";
-        previewImage.style.display = "block";
-        reader.addEventListener("load", function () {
-          previewImage.setAttribute("src", this.result);
-        });
+          previewText.style.display = "none";
+          previewImage.style.display = "block";
+          reader.addEventListener("load", function () {
+            previewImage.setAttribute("src", this.result);
+          });
 
-        reader.readAsDataURL(this.file);
+          reader.readAsDataURL(this.file);
+        } else {
+          previewText.style.display = null;
+          previewImage.style.display = null;
+          previewImage.setAttribute("src", "");
+        }
       } else {
-        previewText.style.display = null;
-        previewImage.style.display = null;
-        previewImage.setAttribute("src", "");
+        var request = new XMLHttpRequest();
+        request.open("GET", this.url, true);
+        request.send();
+        request.onload = function () {
+          if (request.status == 200) {
+            console.log("image exists");
+          } else {
+            previewText.style.display = "block";
+            previewImage.style.display = "none";
+            console.log("image doesn't exist");
+          }
+        };
       }
     },
 
     getColorArray() {
       if (this.file) {
         this.firstTrigger = true;
-        console.log(this.firstTrigger);
         const reader = new FileReader();
 
         var file = document.getElementById("image-preview-image");
@@ -145,6 +159,12 @@ export default {
 
         reader.readAsDataURL(this.file);
       }
+    },
+  },
+
+  watch: {
+    url() {
+      this.getFile("url");
     },
   },
 };
