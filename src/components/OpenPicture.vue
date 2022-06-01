@@ -3,6 +3,7 @@
     <p class="text-xl pb-2">Import your image below:</p>
 
     <input
+      class="py-6"
       type="file"
       id="inpFile"
       name="img"
@@ -16,9 +17,9 @@
       <span id="image-preview-text">Image Preview</span>
     </div>
 
-<!-- class="hidden" -->
+    <!-- class="hidden" -->
     <canvas
-     
+      class="hidden"
       id="myCanvas"
       :width="widthX"
       :height="heightY"
@@ -33,6 +34,7 @@
         text-white
         font-bold
         py-2
+        my-4
         px-4
         rounded
       "
@@ -60,7 +62,6 @@ export default {
       heightY: 0,
       RGBcolor: "",
       firstTrigger: false
-      
     };
   },
 
@@ -79,12 +80,10 @@ export default {
         previewText.style.display = "none";
         previewImage.style.display = "block";
         reader.addEventListener("load", function () {
-    
           previewImage.setAttribute("src", this.result);
         });
 
         reader.readAsDataURL(this.file);
-
       } else {
         previewText.style.display = null;
         previewImage.style.display = null;
@@ -93,32 +92,30 @@ export default {
     },
 
     getColorArray() {
-      var mySource = document.getElementById("image-preview-image").src;
-      var img = new Image();
-      img.src = mySource;
-
-      // img.onload = function() {
-        
-      // }
+      
+      
 
       if (this.file) {
         this.firstTrigger = true;
+        console.log(this.firstTrigger)
+        const reader = new FileReader();
+        var that = this;
+        var file = document.getElementById("image-preview-image");
+       
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
-        var file =  document.getElementById("image-preview-image");
-    
-       
+
         this.widthX = file.naturalWidth;
         this.heightY = file.naturalHeight;
 
-        // Double click is required in order to work..
-        ctx.drawImage(file, 0, 0, this.widthX, this.heightY);
-        var imageArray = ctx.getImageData(0, 0, this.widthX, this.heightY).data;
+
         
-       
-        console.log(imageArray);
-       
+        reader.addEventListener("load", function () {
+          ctx.drawImage(file, 0, 0, that.widthX, that.heightY);
+          var imageArray = ctx.getImageData(0, 0, that.widthX, that.heightY).data;
+
         
+
         var rgb = { r: 0, g: 0, b: 0 };
         var count = 0;
         var i = -4;
@@ -134,8 +131,19 @@ export default {
         rgb.r = Math.floor(rgb.r / count);
         rgb.g = Math.floor(rgb.g / count);
         rgb.b = Math.floor(rgb.b / count);
-        this.RGBcolor = rgb;
+        that.RGBcolor = rgb;
         console.log(this.RGBcolor);
+        console.log(file);
+        console.log(imageArray);
+
+        });
+      
+        reader.readAsDataURL(this.file);
+
+        // Double click is required in order to work..
+        
+
+        
       }
     },
   },
