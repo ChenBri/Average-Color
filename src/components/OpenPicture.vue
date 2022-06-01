@@ -11,12 +11,19 @@
           name="img"
           accept="image/*"
           @change="getFile('inpFile')"
+          @click="activeTab('file')"
         />
       </div>
 
       <div class="border-2 border-gray-500">
         <p class="text-xl pb-2">Insert your link below:</p>
-        <input v-model="url" type="url" id="url" pattern="https://.*" />
+        <input
+          @click="activeTab('url')"
+          v-model="url"
+          type="url"
+          id="url"
+          pattern="https://.*"
+        />
       </div>
     </div>
 
@@ -74,7 +81,7 @@ export default {
       heightY: 0, // Height of the canvas
       RGBcolor: "", // EGB Object, e.g {r: 113, g: 100, b: 87}
       firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
-      
+      active: "none",
     };
   },
 
@@ -95,26 +102,27 @@ export default {
           reader.addEventListener("load", function () {
             previewImage.setAttribute("src", this.result);
           });
-          reader.readAsDataURL(this.file);
 
           previewText.style.display = "none";
           previewImage.style.display = "block";
-          
+
+          reader.readAsDataURL(this.file);
         } else {
           previewText.style.display = null;
           previewImage.style.display = null;
           previewImage.setAttribute("src", "");
         }
-      } else if(id == "url") {
+      } else if (id == "url") {
         var request = new XMLHttpRequest();
         request.open("GET", this.url, true);
         request.send();
         request.onload = function () {
-
-          if (request.status !== 200) {   // URL isn't a valid image
+          if (request.status !== 200) {
+            // URL isn't a valid image
             previewText.style.display = "block";
             previewImage.style.display = "none";
-          } else {                        // URL is a valid image
+          } else {
+            // URL is a valid image
             previewText.style.display = "none";
             previewImage.style.display = "block";
           }
@@ -123,18 +131,16 @@ export default {
     },
 
     getColorArray() {
-      if (this.file) {
-        this.firstTrigger = true;
-        const reader = new FileReader();
-
+      if (this.file && this.active == "file") {
         var file = document.getElementById("image-preview-image");
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
-
         this.widthX = file.naturalWidth;
         this.heightY = file.naturalHeight;
-
         var that = this;
+        this.firstTrigger = true;
+
+        const reader = new FileReader();
         reader.addEventListener("load", function () {
           ctx.drawImage(file, 0, 0, that.widthX, that.heightY);
           var imageArray = ctx.getImageData(
@@ -161,17 +167,30 @@ export default {
           rgb.b = Math.floor(rgb.b / count);
           that.RGBcolor = rgb;
         });
-
         reader.readAsDataURL(this.file);
+      } else if (this.active == "url") {
+        console.log("url");
       }
+    },
+
+    activeTab(src) {
+
+      
+      const previewImage = this.$el.querySelector("#image-preview-image");
+      const previewText = this.$el.querySelector("#image-preview-text");
+      previewText.style.display = "block";
+      previewImage.style.display = "none";
+      this.firstTrigger=false;
+      this.active = src;
+      document.getElementById("inpFile").value = "";
     },
   },
 
   watch: {
     url() {
-      this.getFile("url");
       // Reset the input file
-      document.getElementById("inpFile").value = "";
+
+      this.getFile("url");
     },
   },
 };
