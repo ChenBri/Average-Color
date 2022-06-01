@@ -17,7 +17,6 @@
       <span id="image-preview-text">Image Preview</span>
     </div>
 
-    <!-- class="hidden" -->
     <canvas
       class="hidden"
       id="myCanvas"
@@ -61,7 +60,7 @@ export default {
       widthX: 0,
       heightY: 0,
       RGBcolor: "",
-      firstTrigger: false
+      firstTrigger: false,
     };
   },
 
@@ -92,58 +91,47 @@ export default {
     },
 
     getColorArray() {
-      
-      
-
       if (this.file) {
         this.firstTrigger = true;
-        console.log(this.firstTrigger)
+        console.log(this.firstTrigger);
         const reader = new FileReader();
-        var that = this;
+
         var file = document.getElementById("image-preview-image");
-       
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
 
         this.widthX = file.naturalWidth;
         this.heightY = file.naturalHeight;
 
-
-        
+        var that = this;
         reader.addEventListener("load", function () {
           ctx.drawImage(file, 0, 0, that.widthX, that.heightY);
-          var imageArray = ctx.getImageData(0, 0, that.widthX, that.heightY).data;
+          var imageArray = ctx.getImageData(
+            0,
+            0,
+            that.widthX,
+            that.heightY
+          ).data;
 
-        
+          var rgb = { r: 0, g: 0, b: 0 };
+          var count = 0;
+          var i = -4;
+          var length = imageArray.length;
 
-        var rgb = { r: 0, g: 0, b: 0 };
-        var count = 0;
-        var i = -4;
-        var length = imageArray.length;
+          while ((i += 5 * 4) < length) {
+            count++;
+            rgb.r += imageArray[i];
+            rgb.g += imageArray[i + 1];
+            rgb.b += imageArray[i + 2];
+          }
 
-        while ((i += 5 * 4) < length) {
-          count++;
-          rgb.r += imageArray[i];
-          rgb.g += imageArray[i + 1];
-          rgb.b += imageArray[i + 2];
-        }
-
-        rgb.r = Math.floor(rgb.r / count);
-        rgb.g = Math.floor(rgb.g / count);
-        rgb.b = Math.floor(rgb.b / count);
-        that.RGBcolor = rgb;
-        console.log(this.RGBcolor);
-        console.log(file);
-        console.log(imageArray);
-
+          rgb.r = Math.floor(rgb.r / count);
+          rgb.g = Math.floor(rgb.g / count);
+          rgb.b = Math.floor(rgb.b / count);
+          that.RGBcolor = rgb;
         });
-      
+
         reader.readAsDataURL(this.file);
-
-        // Double click is required in order to work..
-        
-
-        
       }
     },
   },

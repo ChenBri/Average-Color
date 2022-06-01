@@ -1,17 +1,14 @@
 <template>
-  <page-container>
-    
-  </page-container>
+  <page-container> </page-container>
 </template>
 
 <script>
-import PageContainer from './components/PageContainer.vue'
+import PageContainer from "./components/PageContainer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    PageContainer
+    PageContainer,
   },
-  
-}
+};
 </script>

@@ -1,5 +1,20 @@
 <template>
-  <div v-if="firstTrigger===true" :style="{backgroundColor: HEX}" id="container" class="border-2 w-[200px] h-[200px] flex flex-col justify-center items-center p-6 font-bold text-white">
+  <div
+    v-if="firstTrigger === true"
+    :style="{ backgroundColor: HEX }"
+    id="container"
+    class="
+      border-2
+      w-[200px]
+      h-[200px]
+      flex flex-col
+      justify-center
+      items-center
+      p-6
+      font-bold
+      text-white
+    "
+  >
     <div class="h-[50px] content-center">{{ RGB }}</div>
     <div class="h-[50px] content-center">{{ HEX }}</div>
     <div class="h-[50px] content-center">{{ HSL }}</div>
