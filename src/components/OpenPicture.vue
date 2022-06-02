@@ -169,7 +169,8 @@ export default {
         });
         reader.readAsDataURL(this.file);
       } else if (this.active == "url") {
-        console.log("url");
+        this.RGBcolor = { r: 0, g: 0, b: 0 };
+        this.firstTrigger = true;
       }
     },
 
@@ -191,8 +192,6 @@ export default {
   watch: {
     url() {
       this.url= this.url.replace(/\s/g, '');
-      
-
       this.getFile("url");
     },
   },
