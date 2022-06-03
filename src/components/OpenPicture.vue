@@ -33,8 +33,9 @@
         <span id="image-preview-text">Image Preview</span>
       </div>
 
+   
       <canvas
-        class="hidden"
+      class="hidden"
         id="myCanvas"
         :width="widthX"
         :height="heightY"
@@ -82,6 +83,7 @@ export default {
       RGBcolor: "", // EGB Object, e.g {r: 113, g: 100, b: 87}
       firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
       active: "none",
+      validimg: false
     };
   },
 
@@ -89,9 +91,10 @@ export default {
     getFile(id) {
       const previewImage = this.$el.querySelector("#image-preview-image");
       const previewText = this.$el.querySelector("#image-preview-text");
-
+      var that = this;
       if (id == "inpFile") {
         this.url = ""; //Reset URL
+        that.validimg = false;
 
         const inpFile = document.getElementById(id);
 
@@ -121,35 +124,40 @@ export default {
             // URL isn't a valid image
             previewText.style.display = "block";
             previewImage.style.display = "none";
+            that.validimg = false;
+            
           } else {
             // URL is a valid image
             previewText.style.display = "none";
             previewImage.style.display = "block";
+            that.validimg = true;
+            
           }
         };
       }
     },
 
     getColorArray() {
+      var file = document.getElementById("image-preview-image");
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      this.widthX = file.naturalWidth;
+      this.heightY = file.naturalHeight;
+      var that = this;
+
       if (this.file && this.active == "file") {
-        var file = document.getElementById("image-preview-image");
-        var canvas = document.getElementById("myCanvas");
-        var ctx = canvas.getContext("2d");
-        this.widthX = file.naturalWidth;
-        this.heightY = file.naturalHeight;
-        var that = this;
         this.firstTrigger = true;
 
         const reader = new FileReader();
         reader.addEventListener("load", function () {
           ctx.drawImage(file, 0, 0, that.widthX, that.heightY);
+
           var imageArray = ctx.getImageData(
             0,
             0,
             that.widthX,
             that.heightY
           ).data;
-
           var rgb = { r: 0, g: 0, b: 0 };
           var count = 0;
           var i = -4;
@@ -168,30 +176,58 @@ export default {
           that.RGBcolor = rgb;
         });
         reader.readAsDataURL(this.file);
-      } else if (this.active == "url") {
-        this.RGBcolor = { r: 0, g: 0, b: 0 };
+      } else if (this.active == "url" && this.validimg) {
         this.firstTrigger = true;
+
+        var img = new Image();
+
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0, that.widthX, that.heightY);
+          var imageArray = ctx.getImageData(
+            0,
+            0,
+            that.widthX,
+            that.heightY
+          ).data;
+          var rgb = { r: 0, g: 0, b: 0 };
+          var count = 0;
+          var i = -4;
+          var length = imageArray.length;
+
+          while ((i += 5 * 4) < length) {
+            count++;
+            rgb.r += imageArray[i];
+            rgb.g += imageArray[i + 1];
+            rgb.b += imageArray[i + 2];
+          }
+
+          rgb.r = Math.floor(rgb.r / count);
+          rgb.g = Math.floor(rgb.g / count);
+          rgb.b = Math.floor(rgb.b / count);
+          that.RGBcolor = rgb;
+        };
+        img.crossOrigin = "anonymous";
+        img.src = this.url;
       }
     },
 
     activeTab(src) {
-
-      this.firstTrigger=false;
+      this.firstTrigger = false;
       const previewImage = this.$el.querySelector("#image-preview-image");
-      
       const previewText = this.$el.querySelector("#image-preview-text");
+      this.$el.querySelector("#inpFile").value="";
+      
 
       previewText.style.display = "block";
       previewImage.style.display = "none";
-      
+
       this.active = src;
-      document.getElementById("inpFile").value = "";
     },
   },
 
   watch: {
     url() {
-      this.url= this.url.replace(/\s/g, '');
+      this.url = this.url.replace(/\s/g, "");
       this.getFile("url");
     },
   },
