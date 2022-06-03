@@ -33,9 +33,8 @@
         <span id="image-preview-text">Image Preview</span>
       </div>
 
-   
       <canvas
-      class="hidden"
+        class="hidden"
         id="myCanvas"
         :width="widthX"
         :height="heightY"
@@ -83,7 +82,7 @@ export default {
       RGBcolor: "", // EGB Object, e.g {r: 113, g: 100, b: 87}
       firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
       active: "none",
-      validimg: false
+      validimg: false,
     };
   },
 
@@ -125,13 +124,11 @@ export default {
             previewText.style.display = "block";
             previewImage.style.display = "none";
             that.validimg = false;
-            
           } else {
             // URL is a valid image
             previewText.style.display = "none";
             previewImage.style.display = "block";
             that.validimg = true;
-            
           }
         };
       }
@@ -215,8 +212,7 @@ export default {
       this.firstTrigger = false;
       const previewImage = this.$el.querySelector("#image-preview-image");
       const previewText = this.$el.querySelector("#image-preview-text");
-      this.$el.querySelector("#inpFile").value="";
-      
+      this.$el.querySelector("#inpFile").value = "";
 
       previewText.style.display = "block";
       previewImage.style.display = "none";
