@@ -1,4 +1,5 @@
 <template>
+
   <section>
     <div class="flex flex-cols justify-around">
       <div class="border-2 border-gray-500">
@@ -62,15 +63,23 @@
         :RGBcolor="RGBcolor"
         :firstTrigger="firstTrigger"
       ></color-container>
+
+      {{theArray[0]}}-{{theArray[1]}}-{{theArray[1]}}-{{theArray[3]}}-{{theArray[4]}}
+      
+
     </div>
   </section>
 </template>
 
 <script>
+
 import ColorContainer from "./ColorContainer.vue";
+
+
 export default {
   components: {
     ColorContainer,
+
   },
 
   data() {
@@ -83,6 +92,7 @@ export default {
       firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
       active: "none",
       validimg: false,
+      theArray: []
     };
   },
 
@@ -141,6 +151,7 @@ export default {
       this.widthX = file.naturalWidth;
       this.heightY = file.naturalHeight;
       var that = this;
+      var imageArray;
 
       if (this.file && this.active == "file") {
         this.firstTrigger = true;
@@ -149,7 +160,7 @@ export default {
         reader.addEventListener("load", function () {
           ctx.drawImage(file, 0, 0, that.widthX, that.heightY);
 
-          var imageArray = ctx.getImageData(
+          imageArray = ctx.getImageData(
             0,
             0,
             that.widthX,
@@ -159,6 +170,7 @@ export default {
           var count = 0;
           var i = -4;
           var length = imageArray.length;
+          that.theArray = imageArray;
 
           while ((i += 5 * 4) < length) {
             count++;
@@ -180,7 +192,7 @@ export default {
 
         img.onload = function () {
           ctx.drawImage(img, 0, 0, that.widthX, that.heightY);
-          var imageArray = ctx.getImageData(
+          imageArray = ctx.getImageData(
             0,
             0,
             that.widthX,
@@ -190,6 +202,9 @@ export default {
           var count = 0;
           var i = -4;
           var length = imageArray.length;
+          that.theArray = imageArray;
+
+          
 
           while ((i += 5 * 4) < length) {
             count++;
@@ -205,6 +220,8 @@ export default {
         };
         img.crossOrigin = "anonymous";
         img.src = this.url;
+
+        
       }
     },
 
@@ -219,6 +236,10 @@ export default {
 
       this.active = src;
     },
+
+    createPalette(){
+      console.log('Help me');
+    }
   },
 
   watch: {
@@ -226,6 +247,10 @@ export default {
       this.url = this.url.replace(/\s/g, "");
       this.getFile("url");
     },
+
+    theArray(){
+       this.createPalette();
+    }
   },
 };
 </script>

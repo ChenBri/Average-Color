@@ -1,4 +1,5 @@
 <template>
+    
   <div
     v-if="firstTrigger === true"
     :style="{ backgroundColor: HEX }"
@@ -18,11 +19,15 @@
     <div class="h-[50px] content-center">{{ RGB }}</div>
     <div class="h-[50px] content-center">{{ HEX }}</div>
     <div class="h-[50px] content-center">{{ HSL }}</div>
+
   </div>
 </template>
 
 <script>
+
+
 export default {
+  
   data() {
     return {
       RGB: "",
@@ -38,7 +43,7 @@ export default {
       const Red = this.RGBcolor.r;
       const Green = this.RGBcolor.g;
       const Blue = this.RGBcolor.b;
-
+      
       this.RGB = `rgb(${Red}, ${Green}, ${Blue})`;
 
       const rgbToHex = (r, g, b) =>
