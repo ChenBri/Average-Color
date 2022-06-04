@@ -9,16 +9,24 @@
       w-[200px]
       h-[200px]
       flex flex-col
-      justify-center
+      justify-evenly
       items-center
-      p-6
+      p-12
       font-bold
       text-white
     "
   >
-    <div id="rgb" class="h-[50px] content-center">{{ RGB }}</div> <button v-clipboard="RGB" @click="copyColor('rgb')"  class="inline-block">Copy</button>
-    <div id="hex" class="h-[50px] content-center">{{ HEX }}</div> <button v-clipboard="HEX" @click="copyColor('hex')"  class="inline-block">Copy</button>
-    <div id="hsl" class="h-[50px] content-center">{{ HSL }}</div> <button v-clipboard="'[' + HSL + ']'" @click="copyColor('hsl')"  class="inline-block">Copy</button>
+    <div class="w-[150px] h-[50px] content-center text-center border-2">
+      <div id="rgb">{{ RGB }}</div> <button v-clipboard="RGB" @click="copyColor('rgb')"  class="inline-block">Copy</button>
+    </div>
+
+   <div class="m-4 w-[150px] h-[50px] content-center text-center border-2">
+      <div id="hex">{{ HEX }}</div> <button v-clipboard="HEX" @click="copyColor('hex')"  class="inline-block">Copy</button>
+    </div>
+    
+    <div class="w-[150px] h-[50px] content-center text-center border-2">
+      <div id="hsl">{{ HSL }}</div> <button v-clipboard="'[' + HSL + ']'" @click="copyColor('hsl')"  class="inline-block">Copy</button>
+    </div>
 
   </div>
 </template>
