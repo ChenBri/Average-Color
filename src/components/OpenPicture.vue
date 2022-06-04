@@ -1,8 +1,8 @@
 <template>
 
   <section>
-    <div class="flex flex-cols justify-around">
-      <div class="border-2 border-gray-500">
+    <div class="flex flex-cols justify-around items-center justify-items-center">
+      <div class="border-r-2 border-b-4 border-gray-500 w-[50%] h-[10rem] p-6">
         <p class="text-xl pb-2">Import your image below:</p>
 
         <input
@@ -16,9 +16,10 @@
         />
       </div>
 
-      <div class="border-2 border-gray-500">
+      <div class="border-l-2 border-b-4 border-gray-500 w-[50%] h-[10rem] p-6">
         <p class="text-xl pb-2">Insert your link below:</p>
         <input
+          class="mt-6 w-[80%]"
           @click="activeTab('url')"
           v-model="url"
           type="url"
@@ -49,13 +50,14 @@
           hover:bg-blue-700
           text-white
           font-bold
-          py-2
+          py-4
           my-4
           px-4
-          rounded
+          text-xl
+          
         "
       >
-        Click here find the average color
+        Get Average Color
       </button>
 
       <color-container
@@ -63,8 +65,6 @@
         :RGBcolor="RGBcolor"
         :firstTrigger="firstTrigger"
       ></color-container>
-
-      {{theArray[0]}}-{{theArray[1]}}-{{theArray[1]}}-{{theArray[3]}}-{{theArray[4]}}
       
 
     </div>
@@ -92,7 +92,6 @@ export default {
       firstTrigger: false, // Enable ColorContainer.vue after the first click on the button
       active: "none",
       validimg: false,
-      theArray: []
     };
   },
 
@@ -203,7 +202,6 @@ export default {
           var i = -4;
           var length = imageArray.length;
           that.theArray = imageArray;
-
           
 
           while ((i += 5 * 4) < length) {
@@ -235,10 +233,6 @@ export default {
       previewImage.style.display = "none";
 
       this.active = src;
-    },
-
-    createPalette(){
-      console.log('Help me');
     }
   },
 
@@ -246,10 +240,6 @@ export default {
     url() {
       this.url = this.url.replace(/\s/g, "");
       this.getFile("url");
-    },
-
-    theArray(){
-       this.createPalette();
     }
   },
 };
@@ -258,6 +248,7 @@ export default {
 <style scoped>
 #image-preview-container {
   width: 30rem;
+  
   min-height: 100px;
   border: 2px solid lightgray;
   margin-top: 15px;
@@ -271,5 +262,6 @@ export default {
 #image-preview-image {
   display: none;
   width: 100%;
+  max-height: 17.5rem;
 }
 </style>

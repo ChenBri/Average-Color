@@ -16,9 +16,9 @@
       text-white
     "
   >
-    <div class="h-[50px] content-center">{{ RGB }}</div>
-    <div class="h-[50px] content-center">{{ HEX }}</div>
-    <div class="h-[50px] content-center">{{ HSL }}</div>
+    <div id="rgb" class="h-[50px] content-center">{{ RGB }}</div> <button @click="copyColor('rgb')" class="inline-block">Copy</button>
+    <div id="hex" class="h-[50px] content-center">{{ HEX }}</div> <button @click="copyColor('hex')" class="inline-block">Copy</button>
+    <div id="hsl" class="h-[50px] content-center">{{ HSL }}</div> <button @click="copyColor('hsl')" class="inline-block">Copy</button>
 
   </div>
 </template>
@@ -37,6 +37,14 @@ export default {
   },
 
   props: ["RGBcolor", "firstTrigger"],
+
+  methods: {
+    copyColor(id){
+      var copyText = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(copyText);
+      console.log(copyText);
+    }
+  },
 
   watch: {
     RGBcolor() {
