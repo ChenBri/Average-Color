@@ -1,41 +1,48 @@
 <template>
+
     <div
         v-if="firstTrigger === true"
         :style="{ backgroundColor: HEX }"
         id="container"
         class="border-2 w-[200px] h-[200px] flex flex-col justify-evenly items-center p-12 font-bold text-white"
     >
-        <div class="w-[150px] h-[50px] content-center text-center border-2">
-            <div id="rgb">{{ RGB }}</div>
+        <div class="w-[165px] h-[50px] content-center text-center border-2">
+            <div id="rgb">{{ RGB }}
             <button
-                v-clipboard="RGB"
-                @click="copyColor('rgb')"
+                v-clipboard:copy="RGB"
+                @click="copyColor(this.RGB)"
+
                 class="inline-block"
             >
-                Copy
+                <font-awesome-icon icon="copy" class="inline-block pl-4"/>
             </button>
+            </div>
         </div>
 
-        <div class="m-4 w-[150px] h-[50px] content-center text-center border-2">
-            <div id="hex">{{ HEX }}</div>
+        <div class="m-4 w-[165px] h-[50px] content-center text-center border-2">
+            <div id="hex">{{ HEX }}
             <button
+            
                 v-clipboard="HEX"
-                @click="copyColor('hex')"
+                @click="copyColor(this.HEX)"
                 class="inline-block"
             >
-                Copy
+                <font-awesome-icon icon="copy" class="inline-block pl-4"/>
             </button>
+            </div>
         </div>
 
-        <div class="w-[150px] h-[50px] content-center text-center border-2">
-            <div id="hsl">{{ HSL }}</div>
+        <div class="w-[165px] h-[50px] content-center text-center border-2">
+            <div id="hsl">{{ HSL }}
             <button
+            
                 v-clipboard="'[' + HSL + ']'"
-                @click="copyColor('hsl')"
+                @click="copyColor('[' + HSL + ']')"
                 class="inline-block"
             >
-                Copy
+                <font-awesome-icon icon="copy" class="inline-block pl-4"/>
             </button>
+            </div>
         </div>
     </div>
 </template>
@@ -53,8 +60,8 @@ export default {
     props: ["RGBcolor", "firstTrigger"],
 
     methods: {
-        copyColor() {
-            // Message about the copied color
+        copyColor(color) {
+            console.log(`${color} was copied to clipboard.`)
         },
     },
 
