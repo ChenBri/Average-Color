@@ -16,9 +16,9 @@
       text-white
     "
   >
-    <div id="rgb" class="h-[50px] content-center">{{ RGB }}</div> <button @click="copyColor('rgb')" class="inline-block">Copy</button>
-    <div id="hex" class="h-[50px] content-center">{{ HEX }}</div> <button @click="copyColor('hex')" class="inline-block">Copy</button>
-    <div id="hsl" class="h-[50px] content-center">{{ HSL }}</div> <button @click="copyColor('hsl')" class="inline-block">Copy</button>
+    <div id="rgb" class="h-[50px] content-center">{{ RGB }}</div> <button v-clipboard="RGB" @click="copyColor('rgb')"  class="inline-block">Copy</button>
+    <div id="hex" class="h-[50px] content-center">{{ HEX }}</div> <button v-clipboard="HEX" @click="copyColor('hex')"  class="inline-block">Copy</button>
+    <div id="hsl" class="h-[50px] content-center">{{ HSL }}</div> <button v-clipboard="'[' + HSL + ']'" @click="copyColor('hsl')"  class="inline-block">Copy</button>
 
   </div>
 </template>
@@ -40,9 +40,12 @@ export default {
 
   methods: {
     copyColor(id){
-      var copyText = document.getElementById(id).textContent;
-      navigator.clipboard.writeText(copyText);
+
+
+      var copyText = String(document.getElementById(id).textContent);
+
       console.log(copyText);
+      // console.log(copyText);
     }
   },
 
